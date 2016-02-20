@@ -54,7 +54,7 @@ class Reply(object):
     def __init__(self):
         self._queryDB = Connect()
         self._replyMessage =(
-            "RemindMeBot private message here!" 
+            "RemindMeBot private message here!"
             "\n\n**The message:** \n\n>{message}"
             "\n\n**The original comment:** \n\n>{original}"
             "\n\n**The parent comment from the original comment or its submission:** \n\n>{parent}"
@@ -84,7 +84,7 @@ class Reply(object):
             else:
                 return _force_utf8(reddit.get_info(thing_id=commentObj.parent_id).permalink)
         except IndexError as err:
-            print "parrent_comment error"
+            print "parent_comment error"
             return "It seems your original comment was deleted, unable to return parent comment."
         # Catch any URLs that are not reddit comments
         except Exception  as err:
@@ -118,7 +118,7 @@ class Reply(object):
                 flagDelete = self.new_reply(row[1],row[2], row[4])
                 # removes row based on flagDelete
                 if flagDelete:
-                    cmd = "DELETE FROM message_date WHERE id = %s" 
+                    cmd = "DELETE FROM message_date WHERE id = %s"
                     self._queryDB.cursor.execute(cmd, [row[0]])
                     self._queryDB.connection.commit()
                     alreadyCommented.append(row[0])
@@ -129,7 +129,7 @@ class Reply(object):
     def new_reply(self, permalink, message, author):
         """
         Replies a second time to the user after a set amount of time
-        """ 
+        """
         """
         print self._replyMessage.format(
                 message,
@@ -138,18 +138,18 @@ class Reply(object):
         """
         print "---------------"
         print author
-        print permalink        
+        print permalink
         try:
             reddit.send_message(
-                recipient=str(author), 
-                subject='Hello, ' + _force_utf8(str(author)) + ' RemindMeBot Here!', 
+                recipient=str(author),
+                subject='Hello, ' + _force_utf8(str(author)) + ' RemindMeBot Here!',
                 message=self._replyMessage.format(
                     message=_force_utf8(message),
                     original=_force_utf8(permalink),
                     parent= self.parent_comment(permalink)
                 ))
             print "Did It"
-            return True    
+            return True
         except InvalidUser as err:
             print "InvalidUser", err
             return True
@@ -173,7 +173,7 @@ class Reply(object):
             return False
 
 """
-From Reddit's Code 
+From Reddit's Code
 https://github.com/reddit/reddit/blob/master/r2/r2/lib/unicode.py
 Brought to attention thanks to /u/13steinj
 """
